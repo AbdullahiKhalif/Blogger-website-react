@@ -1,9 +1,20 @@
 import React from "react";
 import useBlgger from "../../Contexts/mainContext";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const PostList = () => {
   const { state, dispatch } = useBlgger();
+
+  // const handleDelete = (post_id) =>{
+  //   if(confirm("Are you sure you want to delete")){
+  //     dispatch({
+  //       type: "DELETE_POST",
+  //       payload: post_id
+  //     })
+  //     toast.success("Successfully deleted post!");
+  //   }
+  // }
   return (
     <div className="max-w-2xl m-auto ">
       <h2 className="text-lg p-2 mt-4 font-semibold text-gray-500">
@@ -11,7 +22,7 @@ const PostList = () => {
       </h2>
 
       {state.posts.map((post) => (
-        <div className="mb-5 m-1">
+        <div className="mb-5 m-1" key={post.id}>
           <div className="p-4 shadow-lg bg-gray-50 rounded-lg w-full h-auto">
             <div className="flex flex-col">
               <div className="flex ">
@@ -48,17 +59,28 @@ const PostList = () => {
                   //       className="w-full h-auto object-cover rounded-md border border-green-400"
                   //     /> */}
                   //   </div>
-                  <h3>No Image</h3>
+                  <h3></h3>
                 )}
-                {state.auth.isAuthenticated &&
-                  state.auth.currentUser.username == post.author && (
+                {state.auth.currentUser &&
+                  post.author === state.auth.currentUser.username && (
                     <div className="flex items-center space-x-2 mt-2 text-center justify-end">
-                      <Link className="px-2 py-3 bg-indigo-600 text-white rounded-md w-24">
+                      <button className="px-2 py-3 bg-indigo-600 hover:bg-indigo-700 outline-none text-white rounded-md w-24">
                         Upadte
-                      </Link>
-                      <Link className="px-2 py-3 bg-red-800 text-white rounded-md w-24">
+                      </button>
+                      <button
+                        onClick={() => {
+                          if (confirm(`Are you sure you want to delete?`)) {
+                            dispatch({
+                              type: "DELETE_POST",
+                              payload: post.id,
+                            });
+                            toast.success("Successfully deleted post!");
+                          }
+                        }}
+                        className="px-2 py-3 bg-red-600 hover:bg-red-700 outline-none text-white rounded-md w-24"
+                      >
                         Delete
-                      </Link>
+                      </button>
                     </div>
                   )}
               </div>

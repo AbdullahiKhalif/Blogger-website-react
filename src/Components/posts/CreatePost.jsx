@@ -37,7 +37,7 @@ const CreatePost = () => {
       const formattedDate = currentDate.toLocaleDateString("en-US", options);
 
        newPost = {
-        post_id: new Date(),
+        id: new Date().getTime(),
         postTitle: postTitle,
         postContent: postContent,
         postImage: postImage,

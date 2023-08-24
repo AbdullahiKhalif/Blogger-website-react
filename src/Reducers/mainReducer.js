@@ -24,6 +24,12 @@ export const mainReducer = (state, action) => {
         posts: [payload.posts, ...state.posts]
       };
     }
+    case "DELETE_POST":{
+      return{
+        ...state,
+        posts: state.posts.filter(post => post.id !== payload)
+      };
+    };
     case "LOGIN_USER": {
       const user = state.users.find((user) => user.email === payload.email && user.password === payload.password);
       if (user) {
